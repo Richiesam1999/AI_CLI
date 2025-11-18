@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered IDE</title>
+    <style>
+        :root {
+            --primary-color: #1e1e1e;
+            --secondary-color: #2d2d30;
+            --accent-color: #007acc;
+            --text-color: #d4d4d4;
+            --sidebar-width: 250px;
+            --ai-panel-height: 200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--secondary-color);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--secondary-color);
+            border-right: 1px solid #3e3e42;
+            overflow-y: auto;
+        }
+
+        .file-explorer {
+            padding: 15px;
+        }
+
+        .file-explorer h3 {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .file-tree {
+            list-style: none;
+        }
+
+        .file-tree li {
+            padding: 5px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-tree li:hover {
+            color: var(--accent-color);
+        }
+
+        .file-tree li span {
+            margin-left: 5px;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--secondary-color);
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .tab {
+            padding: 8px 15px;
+            background-color: var(--secondary-color);
+            border-right: 1px solid #3e3e42;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .code-editor {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            tab-size: 4;
+            -moz-tab-size: 4;
+            white-space: pre;
+        }
+
+        .ai-panel {
+            height: var(--ai-panel-height);
+            border-top: 1px solid #3e3e42;
+            background-color: var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ai-header {
+            padding: 8px 15px;
+            background-color: #252526;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-content {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .ai-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #3e3e42;
+        }
+
+        .ai-input input {
+            flex: 1;
+            background-color: #3c3c3c;
+            border: 1px solid #3e3e42;
+            color: var(--text-color);
+            padding: 8px;
+            border-radius: 3px;
+        }
+
+        .ai-input button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .terminal {
+            height: 150px;
+            background-color: #1e1e1e;
+            border-top: 1px solid #3e3e42;
+            padding: 10px;
+            font-family: 'Consolas', monospace;
+            overflow-y: auto;
+        }
+
+        .status-bar {
+            background-color: #007acc;
+            padding: 3px 15px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">AI IDE</div>
+        <div class="menu">File Edit View Run Terminal Help</div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="file-explorer">
+                <h3>Explorer</h3>
+                <ul class="file-tree">
+                    <li>📁 src
+                        <ul>
+                            <li>📄 index.html</li>
+                            <li>📄 styles.css</li>
+                            <li>📄 app.js</li>
+                        </ul>
+                    </li>
+                    <li>📁 node_modules</li>
+                    <li>📄 package.json</li>
+                    <li>📄 README.md</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <div class="tabs">
+                <div class="tab active">index.html</div>
+                <div class="tab">styles.css</div>
+                <div class="tab">app.js</div>
+            </div>
+            
+            <div class="editor-area">
+                <div class="code-editor" contenteditable="true">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to My App</h1>
+    <p>This is a sample application.</p>
+    <script src="app.js"></script>
+</body>
+</html>
+                </div>
+            </div>
+            
+            <div class="ai-panel">
+                <div class="ai-header">
+                    <div>AI Assistant</div>
+                    <div>⚙️</div>
+                </div>
+                <div class="ai-content">
+                    <p>Hello! I'm your AI assistant. How can I help you with your code today?</p>
+                </div>
+                <div class="ai-input">
+                    <input type="text" placeholder="Ask AI for help with your code...">
+                    <button>Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="terminal">
+        <div>$ npm start</div>
+        <div>> my-app@1.0.0 start</div>
+        <div>> node app.js</div>
+        <div>Server running on port 3000</div>
+    </div>
+
+    <div class="status-bar">
+        <div>Line 10, Column 15</div>
+        <div>UTF-8</div>
+        <div>JavaScript</div>
+    </div>
+
+    <script>
+        // Basic functionality for the IDE
+        document.addEventListener('DOMContentLoaded', function() {
+            const editor = document.querySelector('.code-editor');
+            const tabs = document.querySelectorAll('.tab');
+            const fileTree = document.querySelectorAll('.file-tree li');
+            const aiInput = document.querySelector('.ai-input input');
+            const aiButton = document.querySelector('.ai-input button');
+            const aiContent = document.querySelector('.ai-content');
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    // In a real implementation, this would load the file content
+                    editor.textContent = `// Content of ${tab.textContent}\n\n// Your code here...`;
+                });
+            });
+            
+            // File tree interaction
+            fileTree.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (item.textContent.includes('📄')) {
+                        const fileName = item.textContent.replace('📄', '').trim();
+                        // In a real implementation, this would open the file
+                        tabs.forEach(t => t.classList.remove('active'));
+                        const newTab = Array.from(tabs).find(t => t.textContent === fileName);
+                        if (newTab) {
+                            newTab.classList.add('active');
+                            editor.textContent = `// Content of ${fileName}\n\n// Your code here...`;
+                        }
+                    }
+                });
+            });
+            
+            // AI Assistant interaction
+            aiButton.addEventListener('click', () => {
+                if (aiInput.value.trim() !== '') {
+                    const question = aiInput.value;
+                    aiContent.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+                    aiInput.value = '';
+                    
+                    // Simulate AI response
+                    setTimeout(() => {
+                        aiContent.innerHTML += `<p><strong>AI:</strong> I can help you with that. In a real implementation, this would connect to an AI API like OpenAI.</p>`;
+                        aiContent.scrollTop = aiContent.scrollHeight;
+                    }, 1000);
+                }
+            });
+            
+            aiInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    aiButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
